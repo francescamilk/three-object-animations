@@ -27,7 +27,16 @@ const renderer = new THREE.WebGLRenderer({ canvas });
 renderer.setSize(width, height);
 
 // Animations
+let   time = Date.now();
 const animLoop = () => {
+    // stabilise framerate 
+    const currTime  = Date.now();
+    const deltaTime = currTime - time;
+    time            = currTime;
+
+    // mesh.rotation.y += 0.01;
+    mesh.rotation.y += 0.001 * deltaTime;
+
     renderer.render(scene, camera);
 
     // call function on next frame
