@@ -31,7 +31,13 @@ const clock = new THREE.Clock();
 const animLoop = () => {
     // stabilise framerate
     const elapsedTime = clock.getElapsedTime();
-    mesh.rotation.y   = elapsedTime * Math.PI * 0.5;
+    
+    // move camera
+    camera.position.y = Math.sin(elapsedTime);
+    camera.position.x = Math.cos(elapsedTime);
+    camera.lookAt(mesh.position);
+    
+    // mesh.rotation.y = elapsedTime * Math.PI * 0.5;
 
     renderer.render(scene, camera);
 
