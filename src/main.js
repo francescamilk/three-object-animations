@@ -27,15 +27,11 @@ const renderer = new THREE.WebGLRenderer({ canvas });
 renderer.setSize(width, height);
 
 // Animations
-let   time = Date.now();
+const clock = new THREE.Clock();
 const animLoop = () => {
-    // stabilise framerate 
-    const currTime  = Date.now();
-    const deltaTime = currTime - time;
-    time            = currTime;
-
-    // mesh.rotation.y += 0.01;
-    mesh.rotation.y += 0.001 * deltaTime;
+    // stabilise framerate
+    const elapsedTime = clock.getElapsedTime();
+    mesh.rotation.y   = elapsedTime * Math.PI * 0.5;
 
     renderer.render(scene, camera);
 
