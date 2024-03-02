@@ -27,6 +27,7 @@ const sizes = { width: 800, height: 600 };
 
 // field of view (vertical vision angle), aspect ratio,                  _near, _far 
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100);
+
 // camera.position.x = 2;
 // camera.position.y = 2;
 camera.position.z = 3;
@@ -39,18 +40,20 @@ const renderer = new THREE.WebGLRenderer({ canvas });
 renderer.setSize(sizes.width, sizes.height);
 
 // Animations
-const clock    = new THREE.Clock();
+// const clock    = new THREE.Clock();
 const animLoop = () => {
     // const elapsedTime = clock.getElapsedTime();
-
+    
     // animate object
     // mesh.rotation.y = elapsedTime;
-
-    // animate camera
-    camera.position.x = cursor.x * 8;
-    camera.position.y = cursor.y * 8;
+    
+    // animate camera around (obj) center of the scene
+    camera.position.x = Math.sin(cursor.x * Math.PI * 2) * 3;
+    camera.position.y = cursor.y * 5;
+    camera.position.x = Math.cos(cursor.x * Math.PI * 2) * 3;
+    
     camera.lookAt(mesh.position);
-
+    
     renderer.render(scene, camera);
     window.requestAnimationFrame(animLoop);
 }
