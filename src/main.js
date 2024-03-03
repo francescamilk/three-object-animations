@@ -11,8 +11,10 @@ const scene = new THREE.Scene();
 // Object(s)
 // https://threejs.org/docs/#api/en/objects/Mesh
 const mesh = new THREE.Mesh(
-    new THREE.BoxGeometry(1, 1, 1, 5, 5, 5),
-    new THREE.MeshBasicMaterial({ color: 0xff0000 })
+    // https://threejs.org/docs/#api/en/geometries/BoxGeometry
+    // x, y, z, _widthSegments, _heightSegments, _depthSegments
+    new THREE.BoxGeometry(1, 1, 1, 2, 2, 2),
+    new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true })
 );
 scene.add(mesh);
 
