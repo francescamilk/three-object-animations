@@ -18,13 +18,18 @@ const scene = new THREE.Scene();
 // );
 
 // https://threejs.org/docs/#api/en/core/BufferGeometry
-const positionsArr  = new Float32Array([
-    0, 0, 0,        // first vertex  (x, y, z)
-    0, 1, 0,        // second vertex
-    1, 0, 0         // third vertex
-]);
+const geometry = new THREE.BufferGeometry();
+
+// 30 rand triangles composed of 3 vertices, of 3 values
+const count        = 30;
+const positionsArr = new Float32Array(count * 3 * 3);
+
+for(let i = 0; i < count * 3 * 3; i++) {
+    positionsArr[i] = Math.random();
+}
+
 const positionsAttr = new THREE.BufferAttribute(positionsArr, 3);
-const geometry      = new THREE.BufferGeometry();
+// position attr will be used by the shaders
 geometry.setAttribute('position', positionsAttr);
 
 const material = new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true });
