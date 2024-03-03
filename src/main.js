@@ -10,12 +10,26 @@ const scene = new THREE.Scene();
 
 // Object(s)
 // https://threejs.org/docs/#api/en/objects/Mesh
-const mesh = new THREE.Mesh(
-    // https://threejs.org/docs/#api/en/geometries/BoxGeometry
-    // x, y, z, _widthSegments, _heightSegments, _depthSegments
-    new THREE.BoxGeometry(1, 1, 1, 2, 2, 2),
-    new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true })
-);
+// https://threejs.org/docs/#api/en/geometries/BoxGeometry
+// const mesh = new THREE.Mesh(
+//     // x, y, z, _widthSegments, _heightSegments, _depthSegments
+//     new THREE.BoxGeometry(1, 1, 1, 2, 2, 2),
+//     new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true })
+// );
+
+// https://threejs.org/docs/#api/en/core/BufferGeometry
+const positionsArr  = new Float32Array([
+    0, 0, 0,        // first vertex  (x, y, z)
+    0, 1, 0,        // second vertex
+    1, 0, 0         // third vertex
+]);
+const positionsAttr = new THREE.BufferAttribute(positionsArr, 3);
+const geometry      = new THREE.BufferGeometry();
+geometry.setAttribute('position', positionsAttr);
+
+const material = new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true });
+const mesh     = new THREE.Mesh(geometry, material);
+
 scene.add(mesh);
 
 // Window
@@ -69,6 +83,7 @@ const animLoop = () => {
     // to enable damping
     controls.update();
 
+    // rerender function on next frame
     renderer.render(scene, camera);
     window.requestAnimationFrame(animLoop);
 }
