@@ -11,29 +11,29 @@ const scene = new THREE.Scene();
 // Object(s)
 // https://threejs.org/docs/#api/en/objects/Mesh
 // https://threejs.org/docs/#api/en/geometries/BoxGeometry
-// const mesh = new THREE.Mesh(
-//     // x, y, z, _widthSegments, _heightSegments, _depthSegments
-//     new THREE.BoxGeometry(1, 1, 1, 2, 2, 2),
-//     new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true })
-// );
+const mesh = new THREE.Mesh(
+    // x, y, z, _widthSegments, _heightSegments, _depthSegments
+    new THREE.BoxGeometry(1, 1, 1, 2, 2, 2),
+    new THREE.MeshBasicMaterial({ color: 0xff0000 })
+);
 
 // https://threejs.org/docs/#api/en/core/BufferGeometry
-const geometry = new THREE.BufferGeometry();
+// const geometry = new THREE.BufferGeometry();
 
 // 30 rand triangles composed of 3 vertices, of 3 values
-const count        = 30;
-const positionsArr = new Float32Array(count * 3 * 3);
+// const count        = 30;
+// const positionsArr = new Float32Array(count * 3 * 3);
 
-for(let i = 0; i < count * 3 * 3; i++) {
-    positionsArr[i] = Math.random();
-}
+// for(let i = 0; i < count * 3 * 3; i++) {
+//     positionsArr[i] = Math.random();
+// }
 
-const positionsAttr = new THREE.BufferAttribute(positionsArr, 3);
-// position attr will be used by the shaders
-geometry.setAttribute('position', positionsAttr);
+// const positionsAttr = new THREE.BufferAttribute(positionsArr, 3);
+// // position attr will be used by the shaders
+// geometry.setAttribute('position', positionsAttr);
 
-const material = new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true });
-const mesh     = new THREE.Mesh(geometry, material);
+// const material = new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true });
+// const mesh     = new THREE.Mesh(geometry, material);
 
 scene.add(mesh);
 
