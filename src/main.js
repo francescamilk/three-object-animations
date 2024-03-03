@@ -4,17 +4,17 @@ import gsap from 'gsap'
 import GUI from 'lil-gui';
 
 // Debugger
-const gui      = new GUI({ width: 300 });
+// const gui      = new GUI({ width: 300 });
 const guiObject = { 
     color: '#a778d8',
-    subdivision: 2
+    subdivision: 2,
+    imgSource: '/textures/cow.jpeg'
 };
 
-// show/hide on h keystroke
-window.addEventListener('keydown', (e) => {
-    if(e.key === 'h')
-        gui.show(gui._hidden)
-});
+// window.addEventListener('keydown', (e) => {
+//     if(e.key === 'h')
+//         gui.show(gui._hidden)
+// });
 
 // Canvas
 const canvas = document.querySelector('canvas#webgl');
@@ -22,50 +22,59 @@ const canvas = document.querySelector('canvas#webgl');
 // Scene
 const scene = new THREE.Scene();
 
+// Texture(s)
+const image   = new Image();
+const texture = new THREE.Texture(image);
+texture.colorSpace = THREE.SRGBColorSpace;
+
+image.addEventListener('load', () => {
+    texture.needsUpdate = true;
+});
+
+image.src = guiObject.imgSource;
+
 // Object(s)
-const geometry = new THREE.BoxGeometry(
-    1, 1, 1,
-    guiObject.subdivision, guiObject.subdivision, guiObject.subdivision
-);
-const material = new THREE.MeshBasicMaterial({ color: guiObject.color });
+const geometry = new THREE.BoxGeometry(1, 1, 1);
+const material = new THREE.MeshBasicMaterial({ map: texture });
 const mesh     = new THREE.Mesh(geometry, material);
+
 scene.add(mesh);
 
 // &add to debugger, object n prop
-gui
-    .add(mesh.position, 'y')
-    .min(-3).max(3).step(0.01)
-    .name('elevation');
+// gui
+//     .add(mesh.position, 'y')
+//     .min(-3).max(3).step(0.01)
+//     .name('elevation');
 
-gui
-    .add(guiObject, 'subdivision')
-    .min(1).max(10).step(1)
-    .onFinishChange(() => {
-        mesh.geometry.dispose();
-        mesh.geometry = new THREE.BoxGeometry(
-            1, 1, 1,
-            guiObject.subdivision, guiObject.subdivision, guiObject.subdivision
-        );
-    });
+// gui
+//     .add(guiObject, 'subdivision')
+//     .min(1).max(10).step(1)
+//     .onFinishChange(() => {
+//         mesh.geometry.dispose();
+//         mesh.geometry = new THREE.BoxGeometry(
+//             1, 1, 1,
+//             guiObject.subdivision, guiObject.subdivision, guiObject.subdivision
+//         );
+//     });
 
-gui
-    .add(mesh, 'visible');
+// gui
+//     .add(mesh, 'visible');
 
-gui
-    .add(material, 'wireframe');
+// gui
+//     .add(material, 'wireframe');
 
-gui
-    .addColor(guiObject, 'color')
-    .onChange(() => {
-        material.color.set(guiObject.color);
-    });
+// gui
+//     .addColor(guiObject, 'color')
+//     .onChange(() => {
+//         material.color.set(guiObject.color);
+//     });
 
-guiObject.spin = () => {
-    //                           full circle rotation
-    gsap.to(mesh.rotation, { y: (mesh.rotation.y + Math.PI * 2), duration: 3 });
-}
-gui
-    .add(guiObject, 'spin');
+// guiObject.spin = () => {
+//     //                           full circle rotation
+//     gsap.to(mesh.rotation, { y: (mesh.rotation.y + Math.PI * 2), duration: 3 });
+// }
+// gui
+//     .add(guiObject, 'spin');
 
 // Window
 const sizes = { 
