@@ -1,5 +1,12 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import GUI from 'lil-gui';
+
+// Debugger
+const gui      = new GUI();
+const guiProps = { 
+    color: '#f297d9' 
+};
 
 // Canvas
 const canvas = document.querySelector('canvas#webgl');
@@ -9,33 +16,32 @@ const canvas = document.querySelector('canvas#webgl');
 const scene = new THREE.Scene();
 
 // Object(s)
-// https://threejs.org/docs/#api/en/objects/Mesh
 // https://threejs.org/docs/#api/en/geometries/BoxGeometry
-const mesh = new THREE.Mesh(
-    // x, y, z, _widthSegments, _heightSegments, _depthSegments
-    new THREE.BoxGeometry(1, 1, 1, 2, 2, 2),
-    new THREE.MeshBasicMaterial({ color: 0xff0000 })
-);
-
-// https://threejs.org/docs/#api/en/core/BufferGeometry
-// const geometry = new THREE.BufferGeometry();
-
-// 30 rand triangles composed of 3 vertices, of 3 values
-// const count        = 30;
-// const positionsArr = new Float32Array(count * 3 * 3);
-
-// for(let i = 0; i < count * 3 * 3; i++) {
-//     positionsArr[i] = Math.random();
-// }
-
-// const positionsAttr = new THREE.BufferAttribute(positionsArr, 3);
-// // position attr will be used by the shaders
-// geometry.setAttribute('position', positionsAttr);
-
-// const material = new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true });
-// const mesh     = new THREE.Mesh(geometry, material);
+// x, y, z, _widthSegments, _heightSegments, _depthSegments
+const geometry = new THREE.BoxGeometry(1, 1, 1, 2, 2, 2);
+const material = new THREE.MeshBasicMaterial({ color: guiProps.color });
+const mesh     = new THREE.Mesh(geometry, material);
+// https://threejs.org/docs/#api/en/objects/Mesh
 
 scene.add(mesh);
+
+// &add to debugger
+//   object, prop to tweak
+gui
+    .add(mesh.position, 'y')
+    .min(-3).max(3).step(0.01)
+    .name('elevation');
+//            for controls
+
+gui.add(mesh, 'visible');
+gui.add(material, 'wireframe');
+
+gui
+    .addColor(guiProps, 'color')
+    .onChange((value) => {
+        // stabilize threejs color codes
+        material.color.set(guiProps.color);
+    });
 
 // Window
 const sizes = { 
