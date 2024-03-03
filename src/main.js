@@ -8,7 +8,8 @@ const gui       = new GUI({ width: 300 });
 const guiObject = { 
     color: '#a778d8',
     subdivision: 2,
-    imgSource: '/textures/cow.jpeg'
+    imgSource: '/textures/checkerboard-1024x1024.png'
+    // imgSource: '/textures/cow.jpeg'
 };
 
 window.addEventListener('keydown', (e) => {
@@ -23,26 +24,46 @@ const canvas = document.querySelector('canvas#webgl');
 const scene = new THREE.Scene();
 
 // Texture(s)
-const image   = new Image();
-const texture = new THREE.Texture(image);
-texture.colorSpace = THREE.SRGBColorSpace;
+//       has callbacks for different load states
+const loadingMngr   = new THREE.LoadingManager();
+const textureLoader = new THREE.TextureLoader(loadingMngr);
+const cowTexture    = textureLoader.load(guiObject.imgSource);
 
-image.addEventListener('load', () => {
-    texture.needsUpdate = true;
-});
-image.src = guiObject.imgSource;
+cowTexture.colorSpace = THREE.SRGBColorSpace;
+cowTexture.wrapS      = THREE.RepeatWrapping; // x
+cowTexture.wrapT      = THREE.RepeatWrapping; // y
+
+// optimise to smaller texture
+cowTexture.generateMipmaps = false;
+cowTexture.minFilter = THREE.NearestFilter;
 
 // Object(s)
+// const geometry = new THREE.SphereGeometry(1, 32, 32);
+// const geometry = new THREE.TorusGeometry(1, 0.35, 32, 100);
 const geometry = new THREE.BoxGeometry(1, 1, 1);
-const material = new THREE.MeshBasicMaterial({ map: texture });
-const mesh     = new THREE.Mesh(geometry, material);
+const material = new THREE.MeshBasicMaterial({ 
+    map: cowTexture, 
+    color: guiObject.color 
+});
+
+const mesh = new THREE.Mesh(geometry, material);
 scene.add(mesh);
 
 // &plug debugger
 gui
+    .add(mesh.position, 'x')
+    .min(-3).max(3).step(0.01)
+    .name('alignment');
+
+gui
     .add(mesh.position, 'y')
     .min(-3).max(3).step(0.01)
     .name('elevation');
+
+gui
+    .add(mesh.position, 'z')
+    .min(-3).max(3).step(0.01)
+    .name('closeness');
 
 gui
     .add(guiObject, 'subdivision')
